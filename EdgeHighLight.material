@@ -1,0 +1,54 @@
+vertex_program EdgeHighlightenVS glsl
+{
+	source EdgeHighLightenVS.glsl
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+
+}
+
+fragment_program EdgeHighlightenPS glsl
+{
+	source EdgeEdgeHighLightenFS.glsl
+
+	default_params
+	{
+	}
+}
+
+material EdgeHighLight
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware anticlockwise
+
+			vertex_program_ref EdgeHighlightenVS
+			{
+			}
+			fragment_program_ref EdgeHighlightenPS
+			{
+			}
+		}
+
+		pass
+		{
+			cull_hardware none
+
+			texture_unit
+            {
+                texture RustySteel.jpg
+            }
+
+			texture_unit
+			{
+				texture spheremap.png
+				colour_op_ex add src_texture src_current
+				colour_op_multipass_fallback one one
+				env_map spherical
+			}
+		}
+	}
+}
